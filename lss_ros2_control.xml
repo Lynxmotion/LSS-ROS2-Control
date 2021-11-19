@@ -1,0 +1,9 @@
+<library path="ros2_lss_bus">
+    <class name="lynxmotion/LssBus"
+           type="lynxmotion::LssBusHardware"
+           base_class_type="hardware_interface::SystemInterface">
+        <description>
+            The ROS2 Control implementation for Lynxmotion LSS based robots.
+        </description>
+    </class>
+</library>

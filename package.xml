@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>lss_ros2_control</name>
+  <version>0.9.0</version>
+  <description>Ros2 Control system hardware driver for LSS servos</description>
+  <maintainer email="colin@flyingeinstein.com">Colin F. MacKenzie</maintainer>
+  <license>MIT></license>
+
+  <url type="website">http://lynxmotion.com/</url>
+  <url type="repository">https://github.com/Lynxmotion/AlternativeLSS</url>
+  <url type="bugtracker">https://github.com/Lynxmotion/AlternativeLSS/issues</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>hardware_interface</depend>
+  <depend>pluginlib</depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rcutils</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+
+  <exec_depend>rcutils</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>humanoid_model_msgs</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

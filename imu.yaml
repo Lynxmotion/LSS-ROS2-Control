@@ -1,0 +1,19 @@
+imu:
+  ros__parameters:
+    angular_velocity_stdev: 0.01
+    calibration:
+      accelerometer_offset: null
+      accelerometer_radius: null
+      gyroscope_offset: null
+      magnetometer_offset: null
+      magnetometer_radius: null
+    diagnostic_period: 1
+    frame_id: imu_link
+    frequency: 30.0
+    linear_acceleration_stdev: 0.0015
+    magnetic_field_stdev: 5.0e-07
+    orientation_stdev: 1.0e-06
+    port: /dev/ttyAMA4
+    self_manage: true
+    use_magnetometer: true
+    use_sim_time: false

@@ -1,0 +1,61 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 60  # Hz
+    diagnostic_period: 1
+
+    effort_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    position_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+effort_controller:
+  ros__parameters:
+    joints:
+      - J11
+      - J12
+      - J13
+      - J21
+      - J22
+      - J23
+      - J31
+      - J32
+      - J33
+      - J41
+      - J42
+      - J43
+      - J51
+      - J52
+      - J53
+      - J61
+      - J62
+      - J63
+    interface_name: effort
+
+position_trajectory_controller:
+  ros__parameters:
+    joints:
+      - J11
+      - J12
+      - J13
+      - J21
+      - J22
+      - J23
+      - J31
+      - J32
+      - J33
+      - J41
+      - J42
+      - J43
+      - J51
+      - J52
+      - J53
+      - J61
+      - J62
+      - J63
+    command_interfaces: [position]
+    state_interfaces: [position]
+
