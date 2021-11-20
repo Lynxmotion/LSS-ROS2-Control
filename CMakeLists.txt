@@ -1,4 +1,4 @@
-#cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.5)
 project(lss_ros2_control)
 
 # Default to C99
@@ -27,6 +27,12 @@ find_package(rclcpp REQUIRED)
 find_package(diagnostic_msgs REQUIRED)
 #find_package(humanoid_model_msgs REQUIRED)
 
+# build lynxmotion-lss library
+include(BuildLyxmotionLSS.cmake)
+
+add_compile_options(-Wno-missing-field-initializers)
+
+
 include_directories(include)
 
 #if(BUILD_TESTING)
@@ -44,6 +50,8 @@ add_library(ros2_lss_bus SHARED
         include/ros2_lss_bus/ros2_lss_bus.hpp
         src/ros2_lss_bus.cpp
       )
+
+add_dependencies(ros2_lss_bus lynxmotion-lss)
 
 target_link_libraries(ros2_lss_bus lss-bus-static)
 add_dependencies(ros2_lss_bus lss-bus-static)
@@ -79,7 +87,7 @@ ament_export_include_directories(
     include
 )
 ament_export_libraries(
-    ros2_lss_bus lss-bus-static lynxmotion-lss
+    ros2_lss_bus lynxmotion-lss
 )
 ament_export_dependencies(
     hardware_interface
@@ -93,7 +101,7 @@ ament_export_dependencies(
 ament_package()
 
 install(
-    TARGETS ros2_lss_bus lss-bus-static
+    TARGETS ros2_lss_bus
     EXPORT ros2_lss_bus_exports
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
