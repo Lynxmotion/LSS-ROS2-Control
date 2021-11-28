@@ -194,13 +194,22 @@ namespace lynxmotion {
         return id;
     }
 
+#if defined(ROS_FOXY)
     LssBusHardware::return_type
-    LssBusHardware::configure(const hardware_interface::HardwareInfo & info)
-    {
+    LssBusHardware::configure(const hardware_interface::HardwareInfo & info) {
+      //connection_rate_.sleep();
+      if (configure_default(info) != hardware_interface::return_type::OK) {
+        return hardware_interface::return_type::ERROR;
+      }
+#else
+  LssBusHardware::return_type
+  LssBusHardware::on_init(const hardware_interface::HardwareInfo &info) {
         //connection_rate_.sleep();
-        if (configure_default(info) != hardware_interface::return_type::OK) {
-            return hardware_interface::return_type::ERROR;
+        if (hardware_interface::SystemInterface::on_init(info) !=
+                return_type::SUCCESS) {
+          return return_type::ERROR;
         }
+#endif
 
         try {
             // load required parameters
@@ -228,7 +237,7 @@ namespace lynxmotion {
             }
         } catch (const std::runtime_error& e) {
             RCUTILS_LOG_ERROR_NAMED(lss_hardware_logger, "configure error: %s", e.what());
-            return hardware_interface::return_type::ERROR;
+            return return_type::ERROR;
         }
 
         RCUTILS_LOG_INFO_NAMED(lss_hardware_logger, "configuring LSS bus %s "
@@ -314,8 +323,12 @@ namespace lynxmotion {
 
         bus_state = Stopped;
         RCUTILS_LOG_INFO_NAMED(lss_hardware_logger, "configuring of LSS bus %s complete", hw_name.c_str());
-        return hardware_interface::return_type::OK;
-    }
+#if defined(ROS_FOXY)
+        return return_type::OK;
+#else
+        return return_type::SUCCESS;
+#endif
+  }
 
 
     std::vector<hardware_interface::StateInterface>
@@ -371,7 +384,13 @@ namespace lynxmotion {
         return command_interfaces;
     }
 
+#if defined(ROS_FOXY)
     LssBusHardware::return_type LssBusHardware::start()
+#else
+CallbackReturn LssBusHardware::on_activate(
+        const rclcpp_lifecycle::State &
+  )
+#endif
     {
         // open the LSS bus port
         lss::platform::ChannelDriverError bus_err
@@ -379,7 +398,7 @@ namespace lynxmotion {
         if(bus_err != lss::platform::DriverSuccess) {
             std::string msg;
             RCUTILS_LOG_ERROR_NAMED(lss_hardware_logger, "cannot open port %s: %s", port.c_str(), lss_bus_driver_error_str(bus_err));
-            return hardware_interface::return_type::ERROR;
+            return return_type::ERROR;
         }
 
         // send initial servo state as a broadcast
@@ -424,13 +443,22 @@ namespace lynxmotion {
 
         assert(command_position_.size() == command_position_lss_.size());
 
+#if defined(ROS_FOXY)
         return return_type::OK;
+#else
+        return return_type::SUCCESS;
+#endif
     }
 
-    LssBusHardware::return_type LssBusHardware::stop()
-    {
-        status_ = hardware_interface::status::STOPPED;
 
+#if defined(ROS_FOXY)
+      LssBusHardware::return_type LssBusHardware::stop()
+#else
+CallbackReturn LssBusHardware::on_deactivate(
+    const rclcpp_lifecycle::State &
+    )
+#endif
+    {
         // turn servos red
         for(auto& j: hw_joints) {
           bus.write(lss::Request(j.bus_id, lss::command::LED, lss::Red));
@@ -438,10 +466,14 @@ namespace lynxmotion {
 
         bus.close();
 
-        return hardware_interface::return_type::OK;
+#if defined(ROS_FOXY)
+        return return_type::OK;
+#else
+        return return_type::SUCCESS;
+#endif
     }
 
-    LssBusHardware::return_type LssBusHardware::read()
+    hardware_interface::return_type LssBusHardware::read()
     {
       int n;
         if(reply_pending) {
@@ -483,11 +515,10 @@ namespace lynxmotion {
           reply_pending = true;
 
         // read values from the bus's state realtime buffer to state handles
-        return return_type::OK;
-        //return_type::ERROR;
+        return hardware_interface::return_type::OK;
     }
 
-    LssBusHardware::return_type LssBusHardware::write()
+    hardware_interface::return_type LssBusHardware::write()
     {
       // convert positions from Ros to Lss
       for(size_t i=0; i < command_position_.size(); i++) {
@@ -519,13 +550,7 @@ namespace lynxmotion {
 
         // write values from the command buffer to the command realtime buffer
         // non-realtime write access
-#if 0
-        return command_rtb.push(command_)
-            ? return_type::OK
-            : return_type::ERROR;
-#else
-        return return_type::OK;
-#endif
+        return hardware_interface::return_type::OK;
     }
 
 #if 0

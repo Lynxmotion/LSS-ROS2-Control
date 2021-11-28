@@ -12,12 +12,16 @@
 #include <deque>
 
 /******* Ros2 Controls and related includes ****/
+#if defined(ROS_FOXY)
 #include <hardware_interface/base_interface.hpp>
+#include <hardware_interface/types/hardware_interface_status_values.hpp>
+#else
+#include <rclcpp_lifecycle/state.hpp>
+#endif
 #include <hardware_interface/system_interface.hpp>
 #include <hardware_interface/handle.hpp>
 #include <hardware_interface/hardware_info.hpp>
 #include <hardware_interface/types/hardware_interface_return_values.hpp>
-#include <hardware_interface/types/hardware_interface_status_values.hpp>
 
 
 /******* joint calibration interface *******/
@@ -33,12 +37,20 @@
 
 namespace lynxmotion {
 
+#if defined(ROS_FOXY)
+using LssBusHardwareBaseInterface =
+    hardware_interface::BaseInterface<hardware_interface::SystemInterface>;
+#else
+using LssBusHardwareBaseInterface = hardware_interface::SystemInterface;
+#endif
+
     constexpr const auto HW_IF_STIFFNESS = "stiffness";
     constexpr const auto HW_IF_CURRENT = "current";
 
-    class LssBusHardware : public hardware_interface::BaseInterface<hardware_interface::SystemInterface> {
+    class LssBusHardware : public LssBusHardwareBaseInterface {
     public:
-        using return_type = hardware_interface::return_type;
+        //using return_type = hardware_interface::return_type;
+        using return_type = CallbackReturn;
 
         RCLCPP_SHARED_PTR_DEFINITIONS(LssBusHardware)
 
@@ -67,27 +79,41 @@ namespace lynxmotion {
          *                In calibration mode, offsets/etc are sent to servos instead of position commands.
          */
 
-
+#if defined(ROS_FOXY)
         LSS_HARDWARE_PUBLIC
         return_type configure(const hardware_interface::HardwareInfo & info) override;
-
+#else
+        LSS_HARDWARE_PUBLIC
+        return_type on_init(const hardware_interface::HardwareInfo & info)
+            override;
+#endif
         LSS_HARDWARE_PUBLIC
         std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
         LSS_HARDWARE_PUBLIC
         std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
+#if defined(ROS_FOXY)
         LSS_HARDWARE_PUBLIC
         return_type start() override;
 
         LSS_HARDWARE_PUBLIC
         return_type stop() override;
+#else
+        LSS_HARDWARE_PUBLIC
+        return_type on_activate(const rclcpp_lifecycle::State &
+                                    previous_state) override;
 
         LSS_HARDWARE_PUBLIC
-        return_type read() override;
+        return_type on_deactivate(const rclcpp_lifecycle::State &
+        previous_state) override;
+#endif
 
         LSS_HARDWARE_PUBLIC
-        return_type write() override;
+        hardware_interface::return_type read() override;
+
+        LSS_HARDWARE_PUBLIC
+        hardware_interface::return_type write() override;
 
     protected:
         class StateData {

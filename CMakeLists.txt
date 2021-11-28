@@ -15,8 +15,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra)
 endif()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
-
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(hardware_interface REQUIRED)
@@ -32,8 +30,17 @@ include(BuildLyxmotionLSS.cmake)
 
 add_compile_options(-Wno-missing-field-initializers)
 
+if(NOT ROS_DISTRO)
+  set(ROS_DISTRO $ENV{ROS_DISTRO})
+endif()
 
-include_directories(include)
+if(ROS_DISTRO)
+  string(TOUPPER ${ROS_DISTRO} ROS_DISTRO)
+  add_definitions(-DROS_${ROS_DISTRO})
+  message(STATUS "Targeting ${ROS_DISTRO} Ros2 distro")
+endif()
+
+  include_directories(include)
 
 #if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
