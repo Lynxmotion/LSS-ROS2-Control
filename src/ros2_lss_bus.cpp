@@ -387,7 +387,7 @@ namespace lynxmotion {
 #if defined(ROS_FOXY)
     LssBusHardware::return_type LssBusHardware::start()
 #else
-CallbackReturn LssBusHardware::on_activate(
+LssBusHardware::return_type LssBusHardware::on_activate(
         const rclcpp_lifecycle::State &
   )
 #endif
@@ -454,7 +454,7 @@ CallbackReturn LssBusHardware::on_activate(
 #if defined(ROS_FOXY)
       LssBusHardware::return_type LssBusHardware::stop()
 #else
-CallbackReturn LssBusHardware::on_deactivate(
+LssBusHardware::return_type LssBusHardware::on_deactivate(
     const rclcpp_lifecycle::State &
     )
 #endif
