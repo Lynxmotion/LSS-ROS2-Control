@@ -473,7 +473,7 @@ LssBusHardware::return_type LssBusHardware::on_deactivate(
 #endif
     }
 
-    hardware_interface::return_type LssBusHardware::read()
+    hardware_interface::return_type LssBusHardware::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
       int n;
         if(reply_pending) {
@@ -518,7 +518,7 @@ LssBusHardware::return_type LssBusHardware::on_deactivate(
         return hardware_interface::return_type::OK;
     }
 
-    hardware_interface::return_type LssBusHardware::write()
+    hardware_interface::return_type LssBusHardware::write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
       // convert positions from Ros to Lss
       for(size_t i=0; i < command_position_.size(); i++) {

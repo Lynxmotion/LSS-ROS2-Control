@@ -110,10 +110,10 @@ using LssBusHardwareBaseInterface = hardware_interface::SystemInterface;
 #endif
 
         LSS_HARDWARE_PUBLIC
-        hardware_interface::return_type read() override;
+        hardware_interface::return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
         LSS_HARDWARE_PUBLIC
-        hardware_interface::return_type write() override;
+        hardware_interface::return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
     protected:
         class StateData {
