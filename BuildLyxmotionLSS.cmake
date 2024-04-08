@@ -1,6 +1,6 @@
 include(ExternalProject)
 ExternalProject_Add(lynxmotion-lss
-        GIT_REPOSITORY    git@github.com:lynxmotionbeta/LSS-Arduino-2.git
+        GIT_REPOSITORY    git@github.com:lynxmotionbeta/AlternativeLSS.git
         GIT_TAG           feature/lss-bus-refactor
         PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/lynxmotion-lss"
         #SOURCE_DIR        "${CMAKE_BINARY_DIR}/lynxmotion-lss/src"
