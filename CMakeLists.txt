@@ -23,7 +23,7 @@ find_package(rclcpp REQUIRED)
 #find_package(rcutils REQUIRED)
 #find_package(rmw REQUIRED)
 find_package(diagnostic_msgs REQUIRED)
-#find_package(humanoid_model_msgs REQUIRED)
+#find_package(humanoid_model_msgs)
 
 # build lynxmotion-lss library
 include(BuildLyxmotionLSS.cmake)
@@ -100,9 +100,8 @@ ament_export_dependencies(
     hardware_interface
     pluginlib
     rclcpp
-    #    humanoid_model_msgs
+    #humanoid_model_msgs
     diagnostic_msgs
-    humanoid_model_msgs
 )
 
 ament_package()
