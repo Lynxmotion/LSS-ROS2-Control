@@ -1,11 +1,13 @@
 include(ExternalProject)
 ExternalProject_Add(lynxmotion-lss
-        GIT_REPOSITORY    git@github.com:lynxmotionbeta/AlternativeLSS.git
-        GIT_TAG           feature/lss-bus-refactor
-        PREFIX            "${CMAKE_CURRENT_BINARY_DIR}/lynxmotion-lss"
-        #SOURCE_DIR        "${CMAKE_BINARY_DIR}/lynxmotion-lss/src"
-        #BINARY_DIR        "${CMAKE_BINARY_DIR}/lynxmotion-lss/build"
-        CMAKE_ARGS        -DWITH_LEGACY=OFF -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/lynxmotion-lss
+        GIT_REPOSITORY  git@github.com:lynxmotionbeta/AlternativeLSS.git
+        GIT_TAG         feature/lss-bus-refactor
+        PREFIX          "${CMAKE_CURRENT_BINARY_DIR}/lynxmotion-lss"
+        #SOURCE_DIR     "${CMAKE_BINARY_DIR}/lynxmotion-lss/src"
+        #BINARY_DIR     "${CMAKE_BINARY_DIR}/lynxmotion-lss/build"
+        CMAKE_ARGS      -DWITH_LEGACY=OFF 
+                        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/lynxmotion-lss
+                        -DWITH_ROS=ON
         #CONFIGURE_COMMAND ""
         #BUILD_COMMAND     ""
         #INSTALL_COMMAND   ""
