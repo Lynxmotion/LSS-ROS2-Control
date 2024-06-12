@@ -109,11 +109,21 @@ using LssBusHardwareBaseInterface = hardware_interface::SystemInterface;
         previous_state) override;
 #endif
 
+#if defined(ROS_FOXY) || defined(ROS_GALACTIC)
+        LSS_HARDWARE_PUBLIC
+        hardware_interface::return_type read() override;
+
+        LSS_HARDWARE_PUBLIC
+        hardware_interface::return_type write() override;
+#else
+	// the additional time and duration parameters were introduced in iron
+	// https://github.com/ros-controls/ros2_control/blob/iron/hardware_interface/include/hardware_interface/system_interface.hpp
         LSS_HARDWARE_PUBLIC
         hardware_interface::return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
         LSS_HARDWARE_PUBLIC
         hardware_interface::return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
+#endif
 
     protected:
         class StateData {
