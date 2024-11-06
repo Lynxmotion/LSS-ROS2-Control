@@ -473,7 +473,11 @@ LssBusHardware::return_type LssBusHardware::on_deactivate(
 #endif
     }
 
+#if defined(ROS_FOXY) || defined(ROS_GALACTIC)
+    hardware_interface::return_type LssBusHardware::read()
+#else
     hardware_interface::return_type LssBusHardware::read(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+#endif
     {
       int n;
         if(reply_pending) {
@@ -518,7 +522,11 @@ LssBusHardware::return_type LssBusHardware::on_deactivate(
         return hardware_interface::return_type::OK;
     }
 
+#if defined(ROS_FOXY) || defined(ROS_GALACTIC)
+    hardware_interface::return_type LssBusHardware::write()
+#else
     hardware_interface::return_type LssBusHardware::write(const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+#endif
     {
       // convert positions from Ros to Lss
       for(size_t i=0; i < command_position_.size(); i++) {
